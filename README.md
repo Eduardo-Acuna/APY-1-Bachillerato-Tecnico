@@ -1,108 +1,38 @@
-# APY | 1 — Plataforma de preparación para el examen de admisión
+# APY | 1 - Bachillerato Técnico
 
-Plataforma educativa para prepararte a la Prueba de Admisión de los Bachilleratos
-Técnicos del Paraguay. Construida con **HTML + CSS + JavaScript + PHP**.
+Plataforma web diseñada para la preparación académica de estudiantes, orientada a los exámenes de admisión para Bachilleratos Técnicos en Paraguay. El sistema replica el entorno de evaluación oficial, utilizando lineamientos y cuadernillos de la Prueba de Admisión del Ministerio de Educación y Ciencias (MEC).
 
-## Contenido
+---
 
-- **Inicio** (`index.php`) — presentación de la plataforma.
-- **Temario** (`temario.php`) — el temario oficial completo (Matemática, Lengua y
-  Literatura Castellana, Guaraní Ñe'ẽ), organizado por bloque y capacidad, en
-  acordeones desplegables.
-- **Exámenes anteriores** (`examenes.php`) — ejercicios reales extraídos de los
-  cuadernillos de admisión 2017 y 2020, como ejemplo de estilo y dificultad.
-- **Simulacro** (`simulacro.php`) — examen cronometrado, dividido en las tres
-  materias, con burbujas de respuesta como en la hoja oficial y corrección
-  automática al finalizar.
-- **Mis resultados** (`resultados.php`) — historial de simulacros rendidos,
-  leído desde `storage/resultados.json` mediante PHP.
+## Arquitectura y Tecnologías
 
-## Cómo funciona el PHP
+El proyecto está desarrollado con un enfoque modular para facilitar la escalabilidad y el mantenimiento del código base.
 
-- `partials/nav.php` y `partials/footer.php` se incluyen (`include`) en cada
-  página para no repetir el HTML del encabezado y pie.
-- `data/*.php` contienen los bancos de datos (temario, exámenes de ejemplo y
-  preguntas del simulacro) como arrays de PHP, que las páginas recorren con
-  `foreach` para generar el HTML.
-- `simulacro.php` convierte el banco de preguntas a JSON con
-  `json_encode(...)` y se lo pasa a `js/simulacro.js`, que corre el examen
-  enteramente en el navegador (temporizador, navegación entre preguntas,
-  corrección).
-- Al terminar un simulacro, `js/simulacro.js` hace un `fetch()` POST a
-  `api/guardar_resultado.php`, que valida los datos y los agrega a
-  `storage/resultados.json` (una mini "base de datos" en archivo plano, sin
-  necesidad de configurar MySQL).
-- `resultados.php` lee ese mismo archivo con PHP puro y arma la tabla de
-  historial.
+*   **Frontend:** HTML5 semántico y CSS3 puro.
+*   **Sistema de Diseño:** Implementación de CSS Grid y Flexbox para layouts responsivos. Uso extensivo de variables CSS para mantener la consistencia corporativa del esquema de colores.
+*   **Estructura Base:** PHP. La arquitectura visual utiliza un sistema de directorios parciales (`partials/`) para la inyección y reutilización de componentes de interfaz (cabeceras, pies de página, y módulos de temarios).
 
-## Cómo ejecutar el proyecto localmente
+## Módulos Principales
 
-Necesitás PHP instalado (viene con **XAMPP**, **MAMP**, **Laragon**, o podés
-instalar `php-cli`).
+*   **Motor de Simulacros:** Interfaz interactiva que emula las hojas de respuestas oficiales, optimizada para la práctica bajo presión de tiempo.
+*   **Estructuración de Temario:** Organización de contenidos requeridos divididos en tres áreas core: Matemática, Lengua y Literatura Castellana, y Guaraní Ñe'ẽ.
+*   **Repositorio Histórico:** Acceso estructurado a evaluaciones de años anteriores para análisis de patrones de examen.
 
-**Opción rápida (servidor embebido de PHP):**
+## Registro de Cambios Recientes (Refactorización UI)
 
-```bash
-cd apy1
-php -S localhost:8000
-```
+*   **Hero Section:** Transición de un layout dividido a un componente full-width (`.hero-full-bg`). Implementación de propiedades `linear-gradient` sobre fondos fotográficos para asegurar índices correctos de contraste y legibilidad tipográfica.
+*   **Footer Layout:** Reestructuración de la jerarquía visual mediante CSS Grid (`grid-template-columns: 2fr 1fr 1fr`). Aplicación de Flexbox en columna para el control estricto de la alineación entre la marca gráfica y la descripción institucional.
 
-Luego abrí `http://localhost:8000` en tu navegador.
+---
 
-**Con XAMPP/WAMP:** copiá la carpeta `apy1` dentro de `htdocs/` (XAMPP) o
-`www/` (WAMP) y abrí `http://localhost/apy1/`.
+## Despliegue en Entorno Local
 
-> Importante: el sitio usa PHP para el temario, los exámenes de ejemplo, el
-> simulacro y el guardado de resultados. Si abrís los archivos `.php`
-> directamente con doble clic (`file://...`) el navegador no va a poder
-> interpretarlos: necesitás un servidor PHP corriendo (por eso los pasos de
-> arriba).
+Para ejecutar el proyecto en un entorno de desarrollo, es necesario disponer de un servidor local con soporte para PHP (ej. Apache vía XAMPP, MAMP o Laragon).
 
-## Estructura de carpetas
+1. Clonar el repositorio dentro del directorio raíz público del servidor web (`htdocs`, `www` o equivalente):
+   ```bash
+   git clone [https://github.com/Eduardo-Acuna/APY-1-Bachillerato-Tecnico.git](https://github.com/Eduardo-Acuna/APY-1-Bachillerato-Tecnico.git)
 
-```
-apy1/
-├── index.php
-├── temario.php
-├── examenes.php
-├── simulacro.php
-├── resultados.php
-├── partials/
-│   ├── nav.php
-│   └── footer.php
-├── data/
-│   ├── temario_data.php
-│   ├── examenes_data.php
-│   └── simulacro_data.php
-├── api/
-│   └── guardar_resultado.php
-├── storage/
-│   └── resultados.json
-├── css/
-│   └── style.css
-└── js/
-    ├── main.js
-    └── simulacro.js
-```
 
-## Notas sobre el contenido
-
-- Las preguntas de **Matemática** (28) y de **Lengua y Literatura Castellana**
-  (18) del simulacro provienen de cuadernillos reales de la Prueba de
-  Admisión (2017 y 2020) y sus respuestas correctas fueron resueltas y
-  verificadas paso a paso al armar este banco.
-- Las preguntas de **Guaraní Ñe'ẽ** combinan 5 preguntas de comprensión
-  lectora del cuadernillo 2017 (moñe'ẽrã "Pastora Concepción Céspedes") con
-  6 preguntas de vocabulario básico elaboradas a partir del temario oficial.
-- La sección "Exámenes anteriores" muestra más preguntas de ejemplo (sin
-  corrección automática) para practicar el estilo general de las cuatro
-  fuentes originales.
-
-## Personalización rápida
-
-- Colores, tipografías y el resto del sistema de diseño están centralizados
-  como variables CSS al inicio de `css/style.css` (`:root { --paper: ...; }`).
-- Para agregar más preguntas al simulacro, sumá elementos al array
-  `preguntas` correspondiente en `data/simulacro_data.php` (mismo formato:
-  `texto`, `opciones` con 4 elementos, `correcta` con el índice 0-3 de la
-  opción correcta).
+Aviso Legal
+Material de software desarrollado con fines estrictamente educativos. Este código y su contenido no representan un producto oficial de carácter gubernamental, ni están vinculados institucionalmente al Ministerio de Educación y Ciencias (MEC) de Paraguay.
