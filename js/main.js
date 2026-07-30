@@ -5,16 +5,21 @@ if (navToggle && navLinks) {
   navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
 }
 
-// ---------- acordeón del temario ----------
-document.querySelectorAll('[data-area]').forEach((block, idx) => {
-  const toggle = block.querySelector('.area-toggle');
-  toggle.addEventListener('click', () => {
-    block.classList.toggle('open');
+// ---------- temario: navegación lateral (temario_matematica.php, temario_castellano.php, temario_guarani.php) ----------
+document.querySelectorAll('.temario-nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const shell = btn.closest('.temario-shell');
+    if (!shell) return;
+    shell.querySelectorAll('.temario-nav-item').forEach(b => b.classList.remove('active'));
+    shell.querySelectorAll('.temario-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const target = document.getElementById(btn.dataset.target);
+    if (target) target.classList.add('active');
+    window.scrollTo({ top: shell.offsetTop - 90, behavior: 'smooth' });
   });
-  if (idx === 0) block.classList.add('open'); // primera área abierta por defecto
 });
 
-// ---------- filtros de exámenes anteriores ----------
+// ---------- filtros de exámenes anteriores (examenes.php) ----------
 const filterBar = document.getElementById('filterBar');
 if (filterBar) {
   const chips = filterBar.querySelectorAll('.chip');

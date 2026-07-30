@@ -4,7 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>APY | 1 — Preparación para el examen de admisión Bachillerato Técnico</title>
+<title>APY1</title>
+<link rel="icon" type="image/png" href="img/logo2.png">
 <meta name="description" content="Plataforma educativa para prepararte al examen de admisión de los Bachilleratos Técnicos del Paraguay: temario, exámenes anteriores y simulacro.">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,54 +13,31 @@
 <?php include 'partials/nav.php'; ?>
 
 <main>
-  <section class="hero">
-    <div class="wrap" style="display:contents;">
-    <div>
-      <div class="eyebrow">Bachillerato Técnico · Paraguay</div>
-      <h1>Rellená la burbuja correcta<br> el día del examen, no antes.</h1>
-      <p class="lede">APY | 1 reúne el temario oficial, cuadernillos reales de años anteriores y un simulacro con corrección automática, para que llegues a la Prueba de Admisión sabiendo exactamente qué esperar.</p>
-      <div class="hero-cta">
-        <a href="simulacro.php" class="btn">Hacer un simulacro →</a>
-        <a href="temario.php" class="btn ghost">Ver el temario completo</a>
+
+  <section class="hero hero-full-bg">
+      <div class="wrap">
+          <!-- Contenedor para limitar el ancho de las letras y mantener el centrado -->
+          <div class="hero-text-content">
+              <h1>Preparate para el examen de ingreso al Bachillerato Técnico</h1>
+              <p class="lede">APY es una plataforma diseñada para que el estudiante pueda practicar y rendir con confianza. El examen de ingreso para el Bachillerato Técnico en Paraguay evalúa conocimientos específicos en <strong>Matemática, Lengua y Literatura Castellana, y Guaraní</strong>, basándose en los lineamientos oficiales del Ministerio de Educación y Ciencias (MEC).</p>
+              
+              <div class="hero-cta">
+                  <a href="simulacro.php" class="btn">Hacer un simulacro →</a>
+                  <a href="temario.php" class="btn ghost">Ver el temario completo</a>
+              </div>
+          </div>
       </div>
-      <div class="hero-meta">
-        <div><b>3</b>áreas evaluadas</div>
-        <div><b>56+</b>preguntas verificadas</div>
-        <div><b>90</b>min por prueba real</div>
-      </div>
-    </div>
-    <div class="sheet">
-      <div class="sheet-head"><span>Hoja de respuestas</span><span>Fila 1</span></div>
-      <?php
-        $demo = [
-          [1,[1,0,0,0]],[2,[0,1,0,0]],[3,[0,0,1,0]],[4,[0,0,0,1]],
-          [5,[1,0,0,0]],[6,[0,1,0,0]],[7,[0,0,0,1]],
-        ];
-        foreach($demo as $row):
-          [$n,$fill]=$row; $letters=['a','b','c','d'];
-      ?>
-      <div class="sheet-row">
-        <span class="num"><?= str_pad($n,2,'0',STR_PAD_LEFT) ?></span>
-        <div class="bubble-row">
-          <?php foreach($letters as $i=>$l): ?>
-            <span class="bubble <?= $fill[$i] ? 'filled'.($n%2==0?' pine':'') : '' ?>"><?= $l ?></span>
-          <?php endforeach; ?>
-        </div>
-      </div>
-      <?php endforeach; ?>
-    </div>
-    </div>
   </section>
 
   <section>
     <div class="wrap">
       <div class="section-head">
-        <div class="eyebrow">Tres materias, un solo cuadernillo</div>
+
         <h2>Todo lo que entra en la prueba, organizado como en la prueba.</h2>
       </div>
       <div class="grid-3">
         <div class="card subject-mat">
-          <span class="tag">Área 1</span>
+
           <h3>Matemática</h3>
           <p>Números y operaciones, álgebra, geometría, medidas y estadística.</p>
           <ul>
@@ -70,7 +48,7 @@
           </ul>
         </div>
         <div class="card subject-len">
-          <span class="tag">Área 2</span>
+
           <h3>Lengua y Literatura Castellana</h3>
           <p>Comprensión de textos y expresión escrita, tal como se evalúa en la prueba real.</p>
           <ul>
@@ -81,7 +59,7 @@
           </ul>
         </div>
         <div class="card subject-gua">
-          <span class="tag">Área 3</span>
+
           <h3>Guaraní Ñe'ẽ</h3>
           <p>Comprensión de moñe'ẽrã y expresión oral y escrita en guaraní.</p>
           <ul>

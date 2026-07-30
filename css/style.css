@@ -178,8 +178,10 @@ p{ margin: 0 0 1em; color: var(--ink-soft); }
 /* =========================== hero =========================== */
 .hero{
   padding: 76px 0 60px;
-  display:grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items:center;
   border-bottom: 1px solid var(--line);
+}
+.hero-grid{
+  display:grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items:center;
 }
 .hero h1{ font-size: clamp(2.4rem, 5vw, 3.6rem); }
 .hero .lede{ font-size: 1.1rem; max-width: 46ch; }
@@ -222,7 +224,7 @@ section{ padding: 64px 0; }
 
 .grid-3{ display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
 .grid-2{ display:grid; grid-template-columns: repeat(2,1fr); gap: 22px; }
-@media (max-width: 860px){ .grid-3, .grid-2{ grid-template-columns: 1fr; } .hero{ grid-template-columns: 1fr; } }
+@media (max-width: 860px){ .grid-3, .grid-2{ grid-template-columns: 1fr; } .hero-grid{ grid-template-columns: 1fr; } }
 
 .card{
   background: var(--white);
@@ -412,262 +414,530 @@ table.history th{ font-family: var(--f-mono); font-size:.7rem; text-transform:up
 .empty-state{ text-align:center; padding: 60px 20px; color: var(--ink-soft); font-family: var(--f-mono); font-size:.9rem;}
 
 
+/* =========================================================
+   TEMARIO — acordeón de capacidades (teoría + demostración + ejemplos)
+   Usado por temario_matematica.php, temario_castellano.php y
+   temario_guarani.php a través de partials/temario_area.php.
+   Reorganizado para usar únicamente las variables de :root de arriba.
+   ========================================================= */
 
-/* ============================================
-   ESTILOS PARA TEORÍA EN TEMARIO
-   ============================================ */
+.bloque{ padding: 16px 0; border-top: 1px solid var(--paper-2); }
+.bloque:first-child{ border-top: none; }
+.bloque h4{
+  font-family: var(--f-mono);
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--pine);
+  margin-bottom: 12px;
+}
 
-.cap-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.cap-block{
+  border: 1px solid var(--paper-2);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  background: var(--paper);
+  overflow: hidden;
+}
+.cap-toggle{
   width: 100%;
-  background: none;
-  border: none;
-  padding: 8px 12px;
-  font-size: inherit;
-  font-family: inherit;
   text-align: left;
+  background: var(--white);
+  border: none;
   cursor: pointer;
-  color: var(--ink-2);
-  border-radius: 6px;
-  transition: background 0.2s;
-}
-
-.cap-toggle:hover {
-  background: var(--paper-2);
-}
-
-.cap-toggle .cap-title {
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-.cap-toggle .cap-chev {
-  font-size: 0.8rem;
-  color: var(--muted);
-  transition: transform 0.25s ease;
-}
-
-.capacidad.open .cap-toggle .cap-chev {
-  transform: rotate(180deg);
-}
-
-.cap-body {
-  display: none;
-  padding: 6px 12px 16px 12px;
-  border-left: 3px solid var(--line);
-  margin-left: 8px;
-}
-
-.capacidad.open .cap-body {
-  display: block;
-}
-
-.cap-temas {
-  margin: 0 0 10px 0;
-  padding-left: 20px;
-  font-size: 0.92rem;
-  color: var(--ink-2);
-}
-
-.cap-temas li {
-  margin-bottom: 3px;
-}
-
-.cap-teoria {
-  background: var(--paper-2);
-  border-radius: 8px;
   padding: 14px 18px;
-  margin-top: 8px;
-  font-size: 0.94rem;
-  line-height: 1.65;
-  border: 1px solid var(--line);
-}
-
-.cap-teoria h4 {
-  margin: 0 0 8px 0;
-  font-size: 1rem;
-  color: var(--ink);
-}
-
-.cap-teoria ul,
-.cap-teoria ol {
-  padding-left: 22px;
-  margin: 6px 0 10px 0;
-}
-
-.cap-teoria li {
-  margin-bottom: 4px;
-}
-
-.cap-teoria p {
-  margin: 6px 0;
-}
-
-.cap-teoria strong {
-  color: var(--ink);
-}
-
-/* Ajuste para el área-block */
-.area-block .capacidad {
-  border-bottom: 1px solid var(--line-soft);
-  padding: 4px 0;
-}
-
-.area-block .capacidad:last-child {
-  border-bottom: none;
-}
-
-/* ============================================
-   ESTILOS PARA SELECTOR DE ÁREAS (temario.php)
-   ============================================ */
-
-.area-selector {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-  margin: 20px 0 30px 0;
-}
-
-.area-card {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: 30px 20px 24px;
-  border-radius: 16px;
-  text-decoration: none;
+  justify-content: space-between;
+  gap: 14px;
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: .95rem;
   color: var(--ink);
+  transition: background .15s ease;
+}
+.cap-toggle:hover{ background: var(--paper-2); }
+.cap-toggle .cap-chev{
+  font-family: var(--f-mono);
+  color: var(--ink-soft);
+  flex-shrink: 0;
+  transition: transform .2s ease;
+}
+.cap-block.open .cap-toggle .cap-chev{ transform: rotate(45deg); }
+.cap-block.open .cap-toggle{ background: var(--paper-2); }
+
+.cap-body{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+  background: var(--white);
+}
+.cap-block.open .cap-body{ max-height: 8000px; }
+.cap-inner{ padding: 18px 20px 22px; border-top: 1px dashed var(--line); }
+
+.cap-temas{
+  margin: 0 0 18px;
+  padding-left: 1.2em;
+  color: var(--ink-soft);
+  font-size: .88rem;
+  columns: 2;
+  column-gap: 24px;
+}
+.cap-temas li{ margin-bottom: 4px; break-inside: avoid; }
+@media (max-width: 700px){ .cap-temas{ columns: 1; } }
+
+.cap-teoria{
   background: var(--paper);
   border: 1px solid var(--line);
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  font-size: .92rem;
 }
-
-.area-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+.cap-teoria h4{
+  font-family: var(--f-mono);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-size: .78rem;
+  color: var(--pine);
+  margin: 16px 0 8px;
 }
+.cap-teoria h4:first-child{ margin-top: 0; }
+.cap-teoria p{ margin: 0 0 .8em; color: var(--ink); font-size: .92rem; }
+.cap-teoria ul, .cap-teoria ol{ margin: 0 0 .8em; padding-left: 1.3em; color: var(--ink); font-size: .92rem; }
+.cap-teoria li{ margin-bottom: 4px; }
+.cap-teoria strong{ color: var(--pine-dark); }
+.cap-teoria table{ font-size: .9rem; }
 
-.area-card .area-icon {
-  font-size: 2.8rem;
+/* Demostración: caja distinguida con acento dorado, entre la teoría y los ejemplos */
+.cap-demo{
+  background: #FBF6E9;
+  border: 1px solid var(--gold);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  font-size: .92rem;
+}
+.cap-demo-label{
+  font-family: var(--f-mono);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .68rem;
+  color: #8a6a1a;
   margin-bottom: 10px;
 }
+.cap-demo h4{
+  font-family: var(--f-mono);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-size: .78rem;
+  color: #8a6a1a;
+  margin: 14px 0 8px;
+}
+.cap-demo h4:first-child{ margin-top: 0; }
+.cap-demo p{ margin: 0 0 .7em; color: var(--ink); font-size: .92rem; }
+.cap-demo strong{ color: var(--ink); }
 
-.area-card h2 {
-  margin: 0 0 6px 0;
-  font-size: 1.3rem;
+.cap-ejemplos-label{
+  font-family: var(--f-mono);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .68rem;
+  color: var(--red-pen);
+  margin-bottom: 10px;
 }
-
-.area-card p {
-  margin: 0 0 12px 0;
-  font-size: 0.92rem;
-  color: var(--ink-2);
-}
-
-.area-card .area-count {
-  font-size: 0.8rem;
-  color: var(--muted);
-  background: var(--paper-2);
-  padding: 4px 14px;
-  border-radius: 20px;
-}
-
-.area-card.area-mat:hover {
-  border-color: #2d6a4f;
-}
-.area-card.area-mat .area-count {
-  background: #e6f0ea;
-  color: #2d6a4f;
-}
-
-.area-card.area-len:hover {
-  border-color: #8B5CF6;
-}
-.area-card.area-len .area-count {
-  background: #ede9fe;
-  color: #8B5CF6;
-}
-
-.area-card.area-gua:hover {
-  border-color: #059669;
-}
-.area-card.area-gua .area-count {
-  background: #d1fae5;
-  color: #059669;
-}
-
-/* Estilos para los bloques (áreas) en temario_matematica.php etc */
-.area-block {
-  margin-bottom: 16px;
+.ejemplo-card{
   border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
+  border-left: 4px solid var(--pine);
+  border-radius: var(--radius);
   background: var(--paper);
+  padding: 16px 18px;
+  margin-bottom: 14px;
 }
-
-.area-toggle {
+.ejemplo-titulo{
+  font-family: var(--f-mono);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.ejemplo-texto{ font-weight: 500; margin-bottom: 12px; font-size: .95rem; color: var(--ink); }
+.ejemplo-opciones{
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 18px;
+}
+.ejemplo-opciones li{
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 16px 20px;
-  background: var(--paper-2);
-  border: none;
-  font-size: 1.05rem;
-  font-weight: 600;
-  font-family: inherit;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: .88rem;
+  color: var(--ink-soft);
+}
+.ejemplo-opciones .letter{
+  font-family: var(--f-mono);
+  font-size: .68rem;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--ink);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.ejemplo-opciones li.correct{ color: var(--ink); font-weight: 600; }
+.ejemplo-opciones li.correct .letter{ background: var(--pine); border-color: var(--pine); color: var(--white); }
+@media (max-width: 600px){ .ejemplo-opciones{ grid-template-columns: 1fr; } }
+
+.ejemplo-explicacion{
+  border-left: 3px solid var(--pine);
+  background: #EAF2EE;
+  padding: 10px 14px;
+  font-size: .86rem;
   color: var(--ink);
-  cursor: pointer;
-  transition: background 0.2s;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.ejemplo-explicacion strong{ color: var(--pine-dark); }
+
+/* =========================================================
+   TEMARIO — vista de sidebar + contenido (temario_matematica.php,
+   temario_castellano.php, temario_guarani.php). Contenedor más
+   ancho con bordes laterales más angostos que .wrap.
+   ========================================================= */
+
+.wrap-wide{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 500px){ .wrap-wide{ padding: 0 14px; } }
+
+.temario-shell{
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 26px;
+  align-items: start;
+}
+@media (max-width: 900px){ .temario-shell{ grid-template-columns: 1fr; } }
+
+.temario-sidebar{
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  
+  /* ¡MODIFICACIÓN AQUÍ! Se eliminó el "position: sticky" y "top: 86px" para evitar que 
+     los últimos temas queden ocultos si la lista es muy larga */
+}
+
+.temario-sidebar-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 15px 18px;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: .82rem;
+  letter-spacing: .03em;
+  color: var(--ink);
+}
+.temario-sidebar-head a{
+  font-family: var(--f-mono);
+  font-size: .72rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.temario-sidebar-head a:hover{ color: var(--ink); }
+
+.temario-nav{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  
+  /* ¡MODIFICACIÓN AQUÍ! Se cambió la altura a "none" y el overflow a "visible" */
+  max-height: none;
+  overflow: visible;
+}
+
+.temario-nav-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   text-align: left;
+  background: none;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px 12px;
+  cursor: pointer;
+  font-family: var(--f-body);
+  font-size: .87rem;
+  line-height: 1.3;
+  color: var(--ink);
+  transition: background .15s ease, color .15s ease;
+}
+.temario-nav-item:hover{ background: var(--paper-2); }
+.temario-nav-item.active{ background: var(--pine); color: var(--white); }
+.temario-nav-item .tni-title{ flex: 1; }
+.badge-count{
+  font-family: var(--f-mono);
+  font-size: .65rem;
+  background: var(--paper-2);
+  color: var(--ink-soft);
+  padding: 3px 9px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.temario-nav-item.active .badge-count{ background: rgba(255,255,255,.22); color: var(--white); }
+
+.temario-content{
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px clamp(20px, 4vw, 40px) 46px;
+  min-width: 0;
+}
+.eyebrow-mini{
+  font-family: var(--f-mono);
+  font-size: .7rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--pine);
+  margin-bottom: 14px;
+}
+.temario-pane{ display: none; }
+.temario-pane.active{ display: block; }
+
+.temario-content-head{
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--paper-2);
+}
+.temario-content-head h2{ font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin: 0 0 8px; }
+.temario-subtitle{ color: var(--ink-soft); font-size: .94rem; margin: 0; }
+
+/* Pequeños íconos delante de los subtítulos, para que se lea como una guía de estudio */
+.cap-teoria h4::before{ content: "📌 "; }
+.cap-demo-label::before{ content: "🧮 "; }
+.cap-ejemplos-label::before{ content: "✏️ "; }
+
+/* =========================================================
+   MODERNIZACIÓN — refinamiento visual del temario
+   Mismo sistema de diseño (colores, tipografías, íconos, estructura
+   sidebar + contenido); se suaviza el detalle: sombras, radios,
+   transiciones y jerarquía tipográfica. No cambia HTML ni JS.
+   ========================================================= */
+
+.temario-shell{ gap: 30px; }
+
+/* --- Sidebar --- */
+.temario-sidebar{
+  border-radius: 14px;
+  border-color: var(--paper-2);
+  box-shadow: 0 1px 2px rgba(24,27,34,.04), 0 10px 28px rgba(24,27,34,.07);
+}
+.temario-sidebar-head{
+  background: linear-gradient(135deg, var(--paper-2), var(--paper));
+  padding: 18px 20px;
+  border-bottom-color: var(--paper-2);
+}
+.temario-nav{
+  padding: 10px;
+  /* (Opcional) Podemos dejar estos estilos de barra por si los llegas a necesitar, no afectarán ahora */
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.temario-nav::-webkit-scrollbar{ width: 6px; }
+.temario-nav::-webkit-scrollbar-thumb{ background: var(--line); border-radius: 999px; }
+
+.temario-nav-item{
+  border-radius: 10px;
+  padding: 13px 14px 13px 18px;
+  position: relative;
+  transition: background .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.temario-nav-item::before{
+  content: "";
+  position: absolute; left: 5px; top: 18%; bottom: 18%; width: 3px;
+  border-radius: 999px;
+  background: transparent;
+  transition: background .18s ease;
+}
+.temario-nav-item:hover{ background: var(--paper-2); transform: translateX(2px); }
+.temario-nav-item.active{
+  background: linear-gradient(135deg, var(--pine), var(--pine-dark));
+  box-shadow: 0 6px 16px rgba(31,77,61,.28);
+  transform: translateX(2px);
+}
+.temario-nav-item.active::before{ background: var(--gold); }
+
+/* --- Panel de contenido --- */
+.temario-content{
+  border-radius: 14px;
+  border-top: 4px solid var(--pine);
+  box-shadow: 0 1px 2px rgba(24,27,34,.04), 0 14px 36px rgba(24,27,34,.07);
+}
+.temario-content-head h2{ letter-spacing: -.01em; }
+
+/* --- Cajas de teoría / demostración / ejemplos --- */
+.cap-teoria, .cap-demo, .ejemplo-card{
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(24,27,34,.03);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.cap-teoria:hover, .cap-demo:hover{ box-shadow: 0 4px 14px rgba(24,27,34,.06); }
+.ejemplo-card:hover{ box-shadow: 0 6px 18px rgba(24,27,34,.07); transform: translateY(-1px); }
+
+/* Sub-encabezados dentro de teoría/demostración: ícono en una placa redondeada
+   en vez de un emoji suelto, para que se lea como un pequeño sistema de íconos */
+.cap-teoria h4, .cap-demo h4{
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.cap-teoria h4::before{
+  content: "📌";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 7px;
+  background: rgba(31,77,61,.10);
+  font-size: .8rem;
+  flex-shrink: 0;
+}
+.cap-demo h4::before{
+  content: "🧮";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 7px;
+  background: rgba(201,154,46,.20);
+  font-size: .8rem;
+  flex-shrink: 0;
+}
+.cap-demo-label, .cap-ejemplos-label{
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.cap-demo-label::before{
+  content: "🧮";
+  display: inline-flex; align-items:center; justify-content:center;
+  width: 22px; height: 22px; border-radius: 7px;
+  background: rgba(201,154,46,.20);
+  font-size: .74rem;
+}
+.cap-ejemplos-label::before{
+  content: "✏️";
+  display: inline-flex; align-items:center; justify-content:center;
+  width: 22px; height: 22px; border-radius: 7px;
+  background: rgba(166,51,43,.10);
+  font-size: .74rem;
 }
 
-.area-toggle:hover {
-  background: var(--paper-3);
+/* --- Opciones de ejemplo: pequeñas tarjetas en vez de líneas planas --- */
+.ejemplo-opciones li{
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: var(--white);
+  transition: border-color .15s ease, background .15s ease;
+}
+.ejemplo-opciones li:hover{ border-color: var(--ink-soft); }
+.ejemplo-opciones li.correct{
+  background: #EAF2EE;
+  border-color: var(--pine);
 }
 
-.area-toggle .idx {
-  background: var(--pine);
-  color: white;
-  padding: 2px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-right: 14px;
+.ejemplo-explicacion{ border-radius: 8px; }
+
+/* --- Botón "Siguiente área" y tarjetas de la home: sombra sutil al hover --- */
+.card{ transition: box-shadow .2s ease, transform .2s ease; }
+.card:hover{ box-shadow: 0 10px 26px rgba(24,27,34,.07); transform: translateY(-2px); }
+
+
+/* Tamaño del logo en la barra de navegación */
+.logo-nav img {
+    height: 50px; /* Ajusta este número según el grosor de tu menú */
+    width: auto;  /* Mantiene la proporción original */
 }
 
-.area-toggle .chev {
-  font-size: 1.2rem;
-  color: var(--muted);
-  transition: transform 0.3s ease;
+/* Tamaño del logo en el pie de página */
+.logo-footer img {
+    height: 80px; /* En el footer suele quedar bien un poco más grande */
+    width: auto;
+    margin-bottom: 15px; /* Da un poco de espacio debajo del logo */
+}
+/* Convierte la sección en un fondo completo con la imagen */
+.hero-full-bg {
+    position: relative;
+    width: 100%;
+    padding: 6rem 0; /* Ajusta el espacio arriba y abajo para mantener el centrado vertical */
+    
+    /* El degradado de crema a transparente + Tu imagen de fondo */
+    background-image: 
+        linear-gradient(90deg, #F2EFE9 40%, rgba(242, 239, 233, 0.85) 60%, rgba(242, 239, 233, 0) 100%),
+        url('../img/inicio1.jpg'); /* Asegúrate de que la ruta sea correcta desde tu archivo CSS */
+        
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    
+    /* Opcional: bordes redondeados si tu diseño general los usa */
+    border-radius: 24px; 
+    overflow: hidden;
 }
 
-.area-block.open .area-toggle .chev {
-  transform: rotate(180deg);
+/* Mantiene el texto alineado a la izquierda tal como en tu diseño original */
+.hero-text-content {
+    max-width: 550px; /* Evita que el texto invada la parte clara de la foto a la derecha */
+    position: relative;
+    z-index: 2;
 }
 
-.area-body {
-  display: none;
-  padding: 0 20px 20px 20px;
+/* Distribución de las 3 columnas en el footer */
+.footer-grid {
+    display: grid;
+    /* 2fr le da el doble de ancho a la primera columna; 1fr y 1fr distribuyen el resto */
+    grid-template-columns: 2fr 1fr 1fr; 
+    gap: 2rem;
+    align-items: start;
+    width: 100%;
 }
 
-.area-block.open .area-body {
-  display: block;
+/* Columna 1: Comportamiento del Logo y el Texto */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 320px; /* Evita que el texto se estire demasiado */
 }
 
-.area-inner {
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
+/* Control del tamaño del logo */
+.footer-logo {
+    width: 120px; /* Ajusta este valor si lo ves muy grande o pequeño */
+    height: auto;
+    display: block;
 }
 
-.area-inner .bloque h4 {
-  margin: 18px 0 10px 0;
-  font-size: 0.95rem;
-  color: var(--ink-2);
-  font-weight: 600;
-}
-
-.area-inner .bloque h4:first-child {
-  margin-top: 0;
+/* Estilo del texto descriptivo */
+.footer-desc {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--ink); /* Usa el color principal de tu marca */
+    opacity: 0.8; /* Lo hace ligeramente más suave que los títulos */
 }

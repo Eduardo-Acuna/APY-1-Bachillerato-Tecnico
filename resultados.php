@@ -17,7 +17,10 @@ $nombres = ['matematica' => 'Matemática', 'lengua' => 'Lengua y Literatura Cast
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mis resultados — APY | 1</title>
+
+<title>APY1 | Mis resultados</title>
+<link rel="icon" type="image/png" href="img/logo2.png">
+
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -26,9 +29,8 @@ $nombres = ['matematica' => 'Matemática', 'lengua' => 'Lengua y Literatura Cast
 <main>
   <section style="padding-bottom:20px;">
     <div class="wrap">
-      <div class="eyebrow">Historial guardado en el servidor</div>
+      <div class="eyebrow">Historial</div>
       <h1 style="font-size:clamp(2rem,4vw,2.8rem);">Mis resultados</h1>
-      <p class="lede" style="max-width:60ch;">Cada vez que terminás un simulacro, el resultado se guarda mediante <code>api/guardar_resultado.php</code>. Esta página lo lee directamente en el servidor con PHP.</p>
     </div>
   </section>
 
